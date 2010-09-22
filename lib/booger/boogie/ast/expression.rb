@@ -15,6 +15,11 @@ module Booger
         attr_accessor :lhs, :op, :rhs
         def to_s; "#{lhs} #{op} #{rhs}" end
       end
+      
+      class TokenExpression < Expression
+        attr_accessor :token
+        alias to_s token
+      end
     end
   end
 end

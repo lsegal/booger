@@ -17,6 +17,7 @@ module Booger
           end
         end
       
+        alias inspect to_s
         def to_s; to_buf(o = Output.new); o end
         def to_buf(o) o.append(to_s, loc) end
       

@@ -1,3 +1,4 @@
+require 'benchmark'
 require 'booger/yard_ext'
 require 'booger/boogie/ast/program'
 require 'booger/boogie/output'
@@ -18,16 +19,24 @@ module Booger
     require 'tempfile'
     Tempfile.open(%w(boogie .bpl), Dir.pwd) do |file|
       base = File.basename(file.path)
-      program = parse(source)
-      bpl = Boogie::Output.new
-      program.to_buf(bpl)
-      puts "====== Boogie contents ======\n\n#{bpl}\n\n" if debug
+      bpl = nil
+      time = Benchmark.measure do 
+        program = parse(source) 
+        bpl = Boogie::Output.new
+        program.to_buf(bpl)
+      end
+      puts "====== Boogie Output (#{base}) (#{'%.2f' % time.total}s) ======\n\n#{bpl}" if debug
       file.puts(bpl)
       file.flush
-      puts "Running: boogie #{base}" if debug
-      results = `boogie #{base}`
-      puts "====== Boogie Results ======\n\n#{results}\n\n" if debug
-      puts Boogie::Results.new(results, bpl.nodemap).to_s
+      unless ENV['DRYRUN']
+        cmd = "boogie /nologo #{base}"
+        puts ">> Running: `#{cmd}'...\n\n" if debug
+        results = nil
+        time = Benchmark.measure { results = `#{cmd}` }
+        puts "====== Boogie Results (#{'%.2f' % time.total}s) ======\n\n#{results}\n" if debug
+        puts "====== Results ======\n\n" if debug
+        puts Boogie::Results.new(results, bpl.nodemap).to_s
+      end
     end
   end
   

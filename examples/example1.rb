@@ -1,10 +1,10 @@
-# @require x >= 0
-# @ensure __result__ == x + y - 2
+# @requires x >= 0
+# @ensures __result__ == x + y - 2
 def inc(x, y)
   return x + y
 end
 
-# @ensure __result__ == x * x * x
+# @ensures __result__ == x * x * x
 def cube(x)
   return x * x
 end

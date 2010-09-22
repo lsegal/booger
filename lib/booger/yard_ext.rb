@@ -39,7 +39,8 @@ module Booger
 end
 
 class YARD::Tags::Library
-  define_tag 'Precondition', :require, Booger::ExpressionTag
-  define_tag 'Postcondition', :ensure, Booger::ExpressionTag
+  define_tag 'Precondition', :requires, Booger::ExpressionTag
+  define_tag 'Postcondition', :ensures, Booger::ExpressionTag
+  define_tag 'Modifies Clause', :modifies, Booger::ExpressionTag
   define_tag 'AST', :ast, Booger::ExpressionTag
 end

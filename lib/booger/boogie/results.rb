@@ -1,3 +1,6 @@
+require 'yard'
+require 'booger/yard_ext'
+
 module Booger
   module Boogie
     class Results
@@ -33,7 +36,7 @@ module Booger
 
       def parse_results(output)
         output.split(/\r?\n/).each do |line|
-          if line =~ /\((\d+),(\d+)\):[^:]+: (.+might not hold.*?)\.?$/
+          if line =~ /\((\d+),(\d+)\): (?:Error|Related).*?: (.+?)\.?$/
             errors[[$1.to_i, $2.to_i]] = $3
           end 
         end
