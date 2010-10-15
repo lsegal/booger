@@ -28,7 +28,7 @@ module Booger
       
       class LocalDeclarationStatement < Statement
         attr_accessor :name
-        attr_accessor :type
+        default :type, 'Object'
         def to_s; "var #{name}: #{type};" end
       end
     

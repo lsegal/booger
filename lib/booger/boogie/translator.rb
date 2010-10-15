@@ -78,7 +78,7 @@ module Booger
     
       private
       
-      def declare_local(name, type)
+      def declare_local(name, type = nil)
         procedure.locals[name] = LocalDeclarationStatement.new(name: name, type: type, procedure: procedure)
       end
     

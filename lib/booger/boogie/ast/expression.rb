@@ -7,8 +7,8 @@ module Booger
 
       class Parameter < Expression
         attr_accessor :name
-        default :type, 'int'
-        def to_s; "#{name}: #{type}" end
+        attr_accessor :type
+        def to_s; "#{name}: VALUE" end
       end
     
       class BinaryExpression < Expression
