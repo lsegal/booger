@@ -1,5 +1,5 @@
 require 'yard'
-require 'booger/yard_ext'
+require_relative '../yard_ext'
 
 module Booger
   module Boogie

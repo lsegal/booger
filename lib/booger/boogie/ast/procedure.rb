@@ -1,5 +1,5 @@
-require 'booger/boogie/ast/node'
-require 'booger/boogie/ast/statement'
+require_relative 'node'
+require_relative 'statement'
 
 module Booger
   module Boogie

@@ -1,4 +1,4 @@
-require 'booger/boogie/ast/node'
+require_relative 'node'
 
 module Booger
   module Boogie

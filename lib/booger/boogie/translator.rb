@@ -1,7 +1,7 @@
-require 'booger/boogie/ast/procedure'
-require 'booger/boogie/ast/program'
-require 'booger/boogie/ast/statement'
-require 'booger/boogie/ast/expression'
+require_relative 'ast/procedure'
+require_relative 'ast/program'
+require_relative 'ast/statement'
+require_relative 'ast/expression'
 
 module Booger
   module Boogie
@@ -13,7 +13,7 @@ module Booger
       def initialize(program = nil)
         self.program = program || Program.new
       end
-    
+
       def translate_methods
         YARD::Registry.all(:method).each do |meth|
           program.procedures << translate_method(meth)
