@@ -1,4 +1,4 @@
-# @ensures __result__ == 9
+# @ensures $result == 9
 def if_then
   x = 10
   if x == 2
@@ -14,7 +14,7 @@ __END__
 $ RESULTS=true ./bin/booger examples/example2.rb 
 ====== Boogie Output (boogie20100922-2856-apw8yw.bpl) (0.07s) ======
 
-procedure #if_then() returns (__result__ : int) ensures __result__ == 9; {
+procedure #if_then() returns ($result : int) ensures $result == 9; {
   var x: int;
   x := 10;
   if (x == 2) {
@@ -23,7 +23,7 @@ procedure #if_then() returns (__result__ : int) ensures __result__ == 9; {
   else {
     x := 9;
   }
-  __result__ := x;
+  $result := x;
   return;
 }
 

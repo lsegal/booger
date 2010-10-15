@@ -30,7 +30,7 @@ module Booger
         private
       
         def to_buf_returns
-          returns ? " returns (__result__ : int)" : ""
+          returns ? " returns (#{returns.name}: VALUE)" : ""
         end
       
         def to_s_contracts

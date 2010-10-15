@@ -45,7 +45,7 @@ module Booger
       class ReturnStatement < Statement
         attr_accessor :expression
         def to_buf(o)
-          o.append_line("__result__ := #{expression};") if expression
+          o.append_line("$result := #{expression};") if expression
           o.append_line("return;", loc)
         end
       end

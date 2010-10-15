@@ -24,9 +24,10 @@ module Booger
         ast = meth.tag(:ast).expression
         self.varmap = {}
         self.procedure = Procedure.new(loc: meth)
-        procedure.returns = Parameter.new(name: "__return__", type: "int")
+        return_type = program.type(meth.tag(:return))
+        procedure.returns = Parameter.new(name: "$result", type: program.type(meth.tag(:return)))
         procedure.name = meth.path
-        procedure.params = meth.parameters.map {|k,v| Parameter.new(name: k) }
+        procedure.params = meth.parameters.map {|k,v| Parameter.new(name: k, type: program.type(meth.tags(:param).find {|x| x.name == k })) }
         procedure.statements = visit(ast)
         unless procedure.statements.last.is_a?(ReturnStatement)
           procedure.statements << ReturnStatement.new(loc: ast.last, procedure: procedure)
@@ -62,13 +63,13 @@ module Booger
             # we need to rewrite this variable name, since you can't assign to parameters in Boogie
             varmap[name] = (name += "0")
           end
-          declare_local(name, 'int')
+          declare_local(name)
           AssignmentStatement.new(lhs: TokenExpression.new(token: name), rhs: visit(assign[1]), procedure: procedure, loc: assign)
         end
       end
       
       def translate_result(res)
-        "__result__"
+        "$result"
       end
     
       def translate_old(old)

@@ -16,7 +16,7 @@ module Booger
       return expr if expr.is_a?(AstNode)
       expr = RubyParser.new(expr, '<stdin>').parse.enumerator[0]
       expr.traverse do |node|
-        node[0].type = :result if node == s(:var_ref, s(:ident, '__result__'))
+        node[0].type = :result if node == s(:var_ref, s(:gvar, "$result"))
         if node.type == :fcall && node[0] == s(:ident, "old")
           node.type = :old 
           node.replace(node.parameters[0])

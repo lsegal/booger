@@ -1,10 +1,13 @@
 # @requires x >= 0
-# @ensures __result__ == x + y - 2
+# @ensures $result == x + y - 2
+# @param [Fixnum] x
+# @param [Fixnum] y
+# @return [Fixnum]
 def inc(x, y)
   return x + y
 end
 
-# @ensures __result__ == x * x * x
+# @ensures $result == x * x * x
 def cube(x)
   return x * x
 end
@@ -18,10 +21,10 @@ Verification Errors (4):
       x + y
 
 - This is the postcondition that might not hold:
-      @ensure __result__ == x + y - 2
+      @ensure $result == x + y - 2
 
 - A postcondition might not hold at this return statement:9:
       x * x
 
 - This is the postcondition that might not hold:
-      @ensure __result__ == x * x * x
+      @ensure $result == x * x * x
