@@ -17,7 +17,7 @@ module Booger
         def to_buf(buf)
           globals.each {|h| buf.append_line(h) }
           constants.values.each {|c| c.to_buf(buf) }
-          types.each {|k,v| buf.append_line("axiom #{k} <: #{v};")}
+          types.each {|k,v| next unless v; buf.append_line("axiom #{k} <: #{v};") }
           fields.values.each {|f| f.to_buf(buf) }
           buf.append_line("")
           procedures.each {|p| p.to_buf(buf); buf.append_line("") }
@@ -29,6 +29,7 @@ module Booger
             superklass = "BasicObject"
           end
           superklass = "BasicObject" if name == "Object" && superklass == "Object"
+          superklass = nil if name = "BasicObject"
           const = case name
           when Fixnum; FixnumConstant.new(name: name)
           when String; Constant.new(name: name)
