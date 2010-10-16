@@ -32,7 +32,7 @@ end
 __END__
 
 booger (master)$ RESULTS=1 ./bin/booger examples/example3.rb 
-====== Boogie Output (boogie20101015-3362-5crvwz.bpl) (0.08s) ======
+====== Boogie Output (boogie20101015-3556-3bc5t6.bpl) (0.07s) ======
 
 type VALUE = int;
 const BasicObject: VALUE;
@@ -66,14 +66,14 @@ procedure #use(self: VALUE) returns ($result: VALUE) modifies Stack$size; modifi
   return;
 }
 
->> Running: `boogie /nologo boogie20101015-3362-5crvwz.bpl'...
+>> Running: `boogie /nologo boogie20101015-3556-3bc5t6.bpl'...
 
-====== Boogie Results (1.56s) ======
+====== Boogie Results (1.54s) ======
 
-boogie20101015-3362-5crvwz.bpl(29,3): Error BP5002: A precondition for this call might not hold.
-boogie20101015-3362-5crvwz.bpl(20,59): Related location: This is the precondition that might not hold.
+boogie20101015-3556-3bc5t6.bpl(29,3): Error BP5002: A precondition for this call might not hold.
+boogie20101015-3556-3bc5t6.bpl(20,59): Related location: This is the precondition that might not hold.
 Execution trace:
-        boogie20101015-3362-5crvwz.bpl(28,3): anon0
+        boogie20101015-3556-3bc5t6.bpl(28,3): anon0
 
 Boogie program verifier finished with 3 verified, 1 error
 
@@ -81,7 +81,8 @@ Boogie program verifier finished with 3 verified, 1 error
 
 Verification Errors (2):
 
-- A precondition for this call might not hold:
+- A precondition for this call might not hold:29:
+      stack.pop
 
 - This is the precondition that might not hold:
       @requires @size > 0

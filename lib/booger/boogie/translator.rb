@@ -80,7 +80,7 @@ module Booger
           if init = YARD::Registry.at(call[0].source + "#initialize")
             declare_local("unused")
             stmt = CallAssignmentStatement.new(procedure: procedure, loc: assign)
-            stmt.rhs = CallStatement.new(procedure: init.path, parameters: [visit(assign[0][0])])
+            stmt.rhs = CallStatement.new(procedure: procedure, loc: assign, name: init.path, parameters: [visit(assign[0][0])])
             stmt.lhs = TokenExpression.new(token: "unused")
           end
         else
@@ -146,7 +146,7 @@ module Booger
             end
           end
           if typeklass && m = YARD::Registry.at(typeklass + '#' + call.last.source)
-            CallStatement.new(procedure: m.path, parameters: [obj])
+            CallStatement.new(name: m.path, parameters: [obj], procedure: procedure, loc: call)
           end
         end
       end

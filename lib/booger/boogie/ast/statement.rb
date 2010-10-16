@@ -43,18 +43,23 @@ module Booger
       end
       
       class CallStatement < Statement
-        attr_accessor :procedure
+        attr_accessor :name
         default :parameters, []
         
-        def to_s; "call unused := #{procedure}(#{parameters.join(', ')});" end
+        def to_buf(o)
+          o.append("call unused", loc)
+          o.append(" := ", loc)
+          o.append(name, loc)
+          o.append_line("(" + parameters.join(', ') + ");")
+        end
       end
       
       class CallAssignmentStatement < AssignmentStatement
         def to_buf(o)
-          o.append("call ")
+          o.append("call ", loc)
           lhs.to_buf(o)
           o.append(" := ", loc)
-          o.append_line("#{rhs.procedure}(#{rhs.parameters.join(', ')});");
+          o.append_line("#{rhs.name}(#{rhs.parameters.join(', ')});");
         end
       end
     
