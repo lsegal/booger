@@ -20,6 +20,11 @@ module Booger
         attr_accessor :token
         alias to_s token
       end
+      
+      class FieldReference < Expression
+        attr_accessor :field
+        def to_s; "#{field.name}[self]" end
+      end
     end
   end
 end

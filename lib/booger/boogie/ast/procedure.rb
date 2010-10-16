@@ -11,18 +11,15 @@ module Booger
         default :contracts, []
         default :labels, []
         default :locals, {}
-        
-        def initialize(*args)
-          super
-        end
       
         def to_buf(buf)
-          buf.append("procedure #{name}(#{params.join(", ")})#{to_buf_returns}", loc)
+          _params = [Parameter.new(name: 'self')] + params
+          buf.append("procedure #{name}(#{_params.join(", ")})#{to_buf_returns}", loc)
           contracts.each {|c| buf.append(" "); c.to_buf(buf) }
           buf.append_line(" {")
           buf.indent do 
             locals.values.each {|l| l.to_buf(buf) }
-            statements.each {|s| s.to_buf(buf) }
+            statements.each {|s| next unless s; s.to_buf(buf) }
           end
           buf.append_line("}")
         end

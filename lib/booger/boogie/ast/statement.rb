@@ -29,7 +29,7 @@ module Booger
       class LocalDeclarationStatement < Statement
         attr_accessor :name
         default :type, 'Object'
-        def to_s; "var #{name}: #{type};" end
+        def to_s; "var #{name}: #{type == 'Array' ? "[VALUE]VALUE" : "VALUE"};" end
       end
     
       class AssertStatement < Statement
@@ -40,6 +40,22 @@ module Booger
       class AssumeStatement < Statement
         attr_accessor :expression
         def to_s; "assume #{expression};" end
+      end
+      
+      class CallStatement < Statement
+        attr_accessor :procedure
+        default :parameters, []
+        
+        def to_s; "call unused := #{procedure}(#{parameters.join(', ')});" end
+      end
+      
+      class CallAssignmentStatement < AssignmentStatement
+        def to_buf(o)
+          o.append("call ")
+          lhs.to_buf(o)
+          o.append(" := ", loc)
+          o.append_line("#{rhs.procedure}(#{rhs.parameters.join(', ')});");
+        end
       end
     
       class ReturnStatement < Statement
@@ -59,7 +75,7 @@ module Booger
           o.append("if (");
           condition.to_buf(o)
           o.append_line(") {")
-          o.indent { self.then.each {|t| t.to_buf(o) } }
+          o.indent { self.then.each {|t| p t; t.to_buf(o) } }
           o.append_line("}")
           if self.else
             o.append_line("else {")

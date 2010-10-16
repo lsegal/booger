@@ -12,12 +12,13 @@ module Booger
           "BasicObject" => Constant.new(name: "BasicObject"),
           "Object" => Constant.new(name: "Object")
         }
-        default :fields, []
+        default :fields, {}
 
         def to_buf(buf)
           globals.each {|h| buf.append_line(h) }
           constants.values.each {|c| c.to_buf(buf) }
           types.each {|k,v| buf.append_line("axiom #{k} <: #{v};")}
+          fields.values.each {|f| f.to_buf(buf) }
           buf.append_line("")
           procedures.each {|p| p.to_buf(buf); buf.append_line("") }
         end
