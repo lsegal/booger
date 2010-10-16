@@ -29,7 +29,7 @@ module Booger
             superklass = "BasicObject"
           end
           superklass = "BasicObject" if name == "Object" && superklass == "Object"
-          superklass = nil if name = "BasicObject"
+          superklass = nil if name == "BasicObject"
           const = case name
           when Fixnum; FixnumConstant.new(name: name)
           when String; Constant.new(name: name)
