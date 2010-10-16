@@ -9,7 +9,7 @@ module Booger
     class Translator
       include AST
     
-      attr_accessor :program, :procedure, :varmap, :meth, :in_modifies
+      attr_accessor :program, :procedure, :varmap, :meth, :in_modifies, :current_contract
     
       def initialize(program = nil)
         self.program = program || Program.new
@@ -37,7 +37,9 @@ module Booger
         %w(requires ensures modifies).each do |tname|
           meth.tags(tname).each do |tag|
             self.in_modifies = true if tname == "modifies"
+            self.current_contract = tag
             procedure.contracts << ContractStatement.new(name: tname, expression: visit(tag.expression), loc: tag, procedure: procedure)
+            self.current_contract = nil
             self.in_modifies = false
           end
         end
@@ -78,6 +80,7 @@ module Booger
         if call[0][0].type == :const && call.last.source == "new"
           declare_local(assign[0].source, program.type(call[0][0].source))
           if init = YARD::Registry.at(call[0].source + "#initialize")
+            add_tags(init, :modifies)
             declare_local("unused")
             stmt = CallAssignmentStatement.new(procedure: procedure, loc: assign)
             stmt.rhs = CallStatement.new(procedure: procedure, loc: assign, name: init.path, parameters: [visit(assign[0][0])])
@@ -96,7 +99,7 @@ module Booger
         name = meth.namespace.path + "$" + ivar[0][1..-1]
         program.fields[name] ||= Field.new(name: name)
         if in_modifies
-          TokenExpression.new(token: name)
+          TokenExpression.new(token: current_contract.object.namespace.path + "$" + ivar[0][1..-1])
         else
           FieldReference.new(field: program.fields[name])
         end
@@ -146,6 +149,7 @@ module Booger
             end
           end
           if typeklass && m = YARD::Registry.at(typeklass + '#' + call.last.source)
+            add_tags(m, :modifies)
             CallStatement.new(name: m.path, parameters: [obj], procedure: procedure, loc: call)
           end
         end
@@ -156,6 +160,10 @@ module Booger
       def declare_local(name, type = program.type('Object'))
         return if procedure.params.any? {|x| x.name == name }
         procedure.locals[name] ||= LocalDeclarationStatement.new(name: name, type: type, procedure: procedure)
+      end
+      
+      def add_tags(object, type)
+        meth.docstring.instance_variable_get("@tags").push *object.tags(type).map {|t| t.dup }
       end
     
       def visit(node)

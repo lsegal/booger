@@ -22,8 +22,6 @@ class Stack
   end
 end
 
-# @modifies "Stack@size"
-# @modifies "Stack@elements"
 def use
   stack = Stack.new
   stack.pop
