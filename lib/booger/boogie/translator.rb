@@ -154,6 +154,7 @@ module Booger
       private
       
       def declare_local(name, type = program.type('Object'))
+        return if procedure.params.any? {|x| x.name == name }
         procedure.locals[name] ||= LocalDeclarationStatement.new(name: name, type: type, procedure: procedure)
       end
     
