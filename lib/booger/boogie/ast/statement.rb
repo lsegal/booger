@@ -80,7 +80,7 @@ module Booger
           o.append("if (");
           condition.to_buf(o)
           o.append_line(") {")
-          o.indent { self.then.each {|t| p t; t.to_buf(o) } }
+          o.indent { self.then.each {|t| t.to_buf(o) } }
           o.append_line("}")
           if self.else
             o.append_line("else {")
