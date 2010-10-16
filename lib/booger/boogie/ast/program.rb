@@ -28,6 +28,7 @@ module Booger
             name = "Object"
             superklass = "BasicObject"
           end
+          superklass = "BasicObject" if name == "Object" && superklass == "Object"
           const = case name
           when Fixnum; FixnumConstant.new(name: name)
           when String; Constant.new(name: name)
